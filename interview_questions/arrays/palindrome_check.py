@@ -19,7 +19,7 @@ def check_palindrome(string: str) -> bool:
     string = [character for character in string 
               if character.isalnum()]
             
-    # Reverse
+    # reverse and compare
     start_idx = 0
     end_idx = len(string) - 1
     
@@ -31,6 +31,20 @@ def check_palindrome(string: str) -> bool:
         
     return True 
 
+# We can also just use string slicing in python
+# but this does not translate well to other languages
+def check_palindrome_python(string: str) -> bool:
+    # Remove special characters and spaces
+    string = string.lower()
+    string = [character for character in string 
+              if character.isalnum()]
+    
+    # Compare with reverse
+    if string == string[::-1]:
+        return True
+    else:
+        return False
+    
 
 if __name__ == '__main__':
     

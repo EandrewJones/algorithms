@@ -13,7 +13,11 @@ Examples:
 3. Was it a car or a cat I saw?
 '''
 
-def check_palindrome(string: str) -> bool:
+# NOTE: We could also break this up into two functions and use the
+# reverse in-place function to reverse it, then check afterwards.
+# This might be slightly faster on average, since it would exit sooner
+# than the two-function approach.
+def is_palindrome(string: str) -> bool:
     # Remove special characters and spaces
     string = string.lower()
     string = [character for character in string 

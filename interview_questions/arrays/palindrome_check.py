@@ -55,7 +55,7 @@ if __name__ == '__main__':
     
     palindromes = ['radar', 'madam' , 'Was it a car or a cat I saw?',
                    'parrot', "This isn't a palindrome!"]
-    checks = [check_palindrome(p) for p in palindromes]
+    checks = [is_palindrome(p) for p in palindromes]
     
     for p, c in zip(palindromes, checks):
         print('{} is a palindrome: {}'.format(p, str(c)))

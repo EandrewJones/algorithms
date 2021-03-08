@@ -10,5 +10,7 @@ as bullet points under each item.
 1. Arrays
     - reversing array in-place
     - checking if a string is a palindrome
+    - reversing and integer
+    - checking if a word is an anagram
 
 ## Algorithms

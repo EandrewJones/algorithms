@@ -12,5 +12,6 @@ as bullet points under each item.
     - checking if a string is a palindrome
     - reversing and integer
     - checking if a word is an anagram
+    - finding duplicate in an array of integers
 
 ## Algorithms

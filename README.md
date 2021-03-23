@@ -13,5 +13,6 @@ as bullet points under each item.
     - reversing and integer
     - checking if a word is an anagram
     - finding duplicate in an array of integers
+2. Linked Lists
 
 ## Algorithms

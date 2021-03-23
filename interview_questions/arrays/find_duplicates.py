@@ -9,6 +9,10 @@ Example:
 
 In array [1, 2, 3, 1, 5], the algorithm would identify 1 as 
 a duplicate.
+
+Note:
+This algorithm cannot handle values < 0 or values greater than
+the length of the array.
 '''
 
 def find_duplicates(array: list) -> list:

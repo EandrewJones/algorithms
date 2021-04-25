@@ -14,5 +14,9 @@ as bullet points under each item.
     - checking if a word is an anagram
     - finding duplicate in an array of integers
 2. Linked Lists
+    - linked lists
+    - doubly-linked lists
+    - finding middle node in a linked list
+    - reversing a linked list in-place
 
 ## Algorithms

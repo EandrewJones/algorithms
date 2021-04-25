@@ -13,10 +13,9 @@ as bullet points under each item.
     - reversing and integer
     - checking if a word is an anagram
     - finding duplicate in an array of integers
-2. Linked Lists
-    - linked lists
-    - doubly-linked lists
+2. Linked Lists & Doubly-linked Lists
     - finding middle node in a linked list
     - reversing a linked list in-place
+3. Stacks
 
 ## Algorithms

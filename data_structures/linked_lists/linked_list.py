@@ -9,136 +9,206 @@ class Node:
         self.data = data
         self.next_node = None
         
+    def __str__(self):
+        return f"{self.data}"
+        
 class LinkedList:
     
     def __init__(self):
         self.head = None
-        self.num_of_nodes = 0
         
+    def __iter__(self):
+        """
+        >>> linked_list = LinkedList()
+        >>> linked_list.insert_start('b')
+        >>> linked_list.insert_start('a')
+        >>> linked_list.insert_end('c')
+        >>> tuple(linked_list)
+        ('a', 'b', 'c')
+        """
+        node = self.head
+        while node:
+            yield node.data
+            node = node.next_node
+        
+    def __str__(self):
+        """
+        >>> linked_list = LinkedList()
+        >>> linked_list.insert_end('a')
+        >>> linked_list.insert_end('b')
+        >>> linked_list.insert_end('c')
+        >>> str(linked_list)
+        'a->b->c'
+        """
+        return "->".join([str(item) for item in self])
+    
+    def __len__(self):
+        """
+        >>> linked_list = LinkedList()
+        >>> for i in range(0, 5):
+        ...     linked_list.insert_at_nth(i, i+1)
+        >>> len(linked_list) == 5
+        True
+        """
+        return len(tuple(iter(self)))
     
     def insert_start(self, data):
-        '''
-        Inserts new node at beginning of linked list
-        
-        run-time: O(1)
-        
-        parameters
-        ----------
-        data: {array-like}
-            An arbitrary data structure to store in first node
-        
-        returns
-        -------
-        None    
-        '''
-        # Increase number of nodes
-        self.num_of_nodes +=1
-        
-        new_node = Node(data)
-        
-        if not self.head:
-            self.head = new_node
-        else:
-            new_node.next_node = self.head
-            self.head = new_node    
+        self.insert_at_nth(0, data)
         
     def insert_end(self, data):
-        '''
-        Inserts new node at the end of the linked list
-        
-        runtime: O(N)
-        
-        parameters
-        ----------
-        data: {array-like}
-            Arbitrary data object to store in node.
+        self.insert_at_nth(len(self), data)
             
-        returns
-        -------
-        None
-        '''
-        # Update number of nodes
-        self.num_of_nodes += 1
+    def insert_at_nth(self, index: int, data):
+        """
+        >>> linked_list = LinkedList()
+        >>> linked_list.insert_at_nth(-1, 666)
+        Traceback (most recent call last):
+        ....
+        IndexError: list index out of range
+        >>> linked_list.insert_at_nth(1, 666)
+        Traceback (most recent call last):
+        ......
+        IndexError: list index out of range
+        >>> linked_list.insert_at_nth(0, 2)
+        >>> linked_list.insert_at_nth(0, 1)
+        >>> linked_list.insert_at_nth(2, 4)
+        >>> linked_list.insert_at_nth(2, 3)
+        >>> str(linked_list)
+        '1->2->3->4'
+        >>> linked_list.insert_at_nth(5, 5)
+        Traceback (most recent call last):
+        ....
+        IndexError: list index out of range
+        """
+        # Index check
+        if not 0 <= index <= len(self):
+            raise IndexError("list index out of range")
         
-        # Instantiate new node
         new_node = Node(data)
-        
-        # Find end of linked list
-        actual_node = self.head
-        while actual_node.next_node is not None:
-            actual_node = actual_node.next_node
-            
-        # Append new node at end
-        actual_node.next_node = new_node
-        
-    def remove_node(self, data):
-        '''
-        Traverse node searching for node with given data value and
-        remove from linked list.
-        
-        Parameters
-        ----------
-        data: {array-like}
-            Item to be search for and removed from data structure
-        
-        Returns
-        -------
-        None
-        '''
         if self.head is None:
-            return
-        
-        actual_node = self.head
-        previous_node = None
-        
-        while actual_node is not None and actual_node.data != data:
-            previous_node = actual_node
-            actual_node = actual_node.next_node
-            
-        # Search miss
-        if actual_node is None:
-            return
-        
-        # Remove head node
-        if previous_node is None:
-            self.head = actual_node.next_node
-        # Remove internal node
+            self.head = new_node
+        elif index == 0:
+            new_node.next_node = self.head
+            self.head = new_node
         else:
-            previous_node.next_node = actual_node.next_node
-            
-        # Decrement number of nodes
-        self.num_of_nodes -= 1
+            temp = self.head
+            for i in range(0, index - 1):
+                temp = temp.next_node
+            new_node.next_node = temp.next_node
+            temp.next_node = new_node
+
+    def delete_head(self):
+        return self.delete_nth(0)
+    
+    def delete_tail(self):
+        return self.delete_nth(len(self) - 1)
+    
+    def delete_nth(self, index: int):
+        """
+        >>> linked_list = LinkedList()
+        >>> linked_list.delete_nth(0)
+        Traceback (most recent call last):
+        ....
+        IndexError: list index out of range
+        >>> for i in range(0, 5):
+        ...     linked_list.insert_at_nth(i, i + 1)
+        >>> linked_list.delete_nth(0) == 1
+        True
+        >>> linked_list.delete_nth(3) == 5
+        True
+        >>> linked_list.delete_nth(1) == 3
+        True
+        >>> str(linked_list)
+        '2->4'
+        >>> linked_list.delete_nth(2)
+        Traceback (most recent call last):
+        ....
+        IndexError: list index out of range
+        """
+        if not 0 <= index <= len(self) - 1:
+            raise IndexError('list index out of range')
+        delete_node = self.head
+        if len(self) == 1:
+            self.head = None
+        elif index == 0:
+            self.head = self.head.next_node
+        else:
+            temp = self.head
+            for i in range(0, index - 1):
+                temp = temp.next_node
+            delete_node = temp.next_node
+            temp.next_node = temp.next_node.next_node
+        return delete_node.data
+    
+    def delete(self, data) -> str:
+        current = self.head
         
-    def size_of_list(self):
-        '''O(1) runtime'''
-        return self.num_of_nodes
-    
-    def traverse(self):
-        '''Iterate over list and print nodes.
-        O(n) runtime
-        '''
-        actual_node = self.head
+        # Find node to delete
+        i = 0
+        while current.data != data:
+            if current.next_node:
+                current = current.next_node
+                i += 1
+            else: # We have reached end w/o finding data
+                return "No data found matching given value"
         
-        while actual_node is not None:
-            print(actual_node.data)
-            actual_node = actual_node.next_node
-            
+        if current == self.head:
+            self.delete_head()
+        else: # Before: a --> b (current) --> c
+            self.delete_nth(i) # a --> c
+        return data
     
-if __name__ == "__main__":
+    def is_empty(self):
+        """
+        >>> linked_list = LinkedList()
+        >>> linked_list.is_empty()    
+        True
+        >>> linked_list.insert_end(1)
+        >>> linked_list.is_empty()
+        False
+        """
+        return len(self) == 0
     
-    # Test
+
+def test_linked_list() -> None:
+    """
+    >>> test_linked_list()
+    """
     linked_list = LinkedList()
-    linked_list.insert_start('Adam')
-    linked_list.insert_start('Eve')
-    linked_list.insert_start(100)
-    linked_list.insert_end([50, 'b', 'c', 143.34])
+    assert linked_list.is_empty() is True
+    assert str(linked_list) == ''
     
-    linked_list.traverse()
-    print("Size: {}\n".format(linked_list.size_of_list()))
+    try:
+        linked_list.delete_head()
+        assert False # This shouldn't happen
+    except IndexError:
+        assert True # This should happen
+        
+    try:
+        linked_list.delete_tail()
+        assert False # should not happen
+    except:
+        assert True # Should happen
+        
+    for i in range(10):
+        assert len(linked_list) == i
+        linked_list.insert_at_nth(i, i + 1)
+    assert str(linked_list) == "->".join(str(i) for i in range(1, 11))
     
-    print('------------------')
-    linked_list.remove_node('Eve')
-    linked_list.traverse()
-    print("Size: {}\n".format(linked_list.size_of_list()))
+    linked_list.insert_start(0)
+    linked_list.insert_end(11)
+    assert str(linked_list) == "->".join(str(i) for i in range(0, 12))
     
+    assert linked_list.delete_head() == 0
+    assert linked_list.delete_nth(9) == 10
+    assert linked_list.delete_tail() == 11
+    assert len(linked_list) == 9
+    assert str(linked_list) == "->".join(str(i) for i in range(1, 10))
     
+    assert linked_list.delete(8) == 8
+
+
+if __name__ == "__main__":
+    from doctest import testmod
+    
+    testmod()

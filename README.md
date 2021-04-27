@@ -17,5 +17,6 @@ as bullet points under each item.
     - finding middle node in a linked list
     - reversing a linked list in-place
 3. Stacks & Queues
+    - finding max value in a stack
 
 ## Algorithms

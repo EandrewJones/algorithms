@@ -16,6 +16,6 @@ as bullet points under each item.
 2. Linked Lists & Doubly-linked Lists
     - finding middle node in a linked list
     - reversing a linked list in-place
-3. Stacks
+3. Stacks & Queues
 
 ## Algorithms

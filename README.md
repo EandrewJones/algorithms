@@ -18,5 +18,6 @@ as bullet points under each item.
     - reversing a linked list in-place
 3. Stacks & Queues
     - finding max value in a stack
+    - queues made from stacks
 
 ## Algorithms

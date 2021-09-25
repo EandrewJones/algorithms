@@ -11,19 +11,19 @@ I will use our previous linked list data structure to implement the queue.
 
 
 class Node:
-    
+
     def __init__(self, data):
         self.data = data
         self.next_node = None
-        
+
     def __str__(self):
         return f"{self.data}"
-        
+
 class LinkedList:
-    
+
     def __init__(self):
         self.head = None
-        
+
     def __iter__(self):
         """
         >>> linked_list = LinkedList()
@@ -37,7 +37,7 @@ class LinkedList:
         while node:
             yield node.data
             node = node.next_node
-        
+
     def __str__(self):
         """
         >>> linked_list = LinkedList()
@@ -48,7 +48,7 @@ class LinkedList:
         'a->b->c'
         """
         return "->".join([str(item) for item in self])
-    
+
     def __len__(self):
         """
         >>> linked_list = LinkedList()
@@ -58,13 +58,13 @@ class LinkedList:
         True
         """
         return len(tuple(iter(self)))
-    
+
     def insert_start(self, data):
         self.insert_at_nth(0, data)
-        
+
     def insert_end(self, data):
         self.insert_at_nth(len(self), data)
-            
+
     def insert_at_nth(self, index: int, data):
         """
         >>> linked_list = LinkedList()
@@ -90,7 +90,7 @@ class LinkedList:
         # Index check
         if not 0 <= index <= len(self):
             raise IndexError("list index out of range")
-        
+
         new_node = Node(data)
         if self.head is None:
             self.head = new_node
@@ -106,10 +106,10 @@ class LinkedList:
 
     def delete_head(self):
         return self.delete_nth(0)
-    
+
     def delete_tail(self):
         return self.delete_nth(len(self) - 1)
-    
+
     def delete_nth(self, index: int):
         """
         >>> linked_list = LinkedList()
@@ -146,10 +146,10 @@ class LinkedList:
             delete_node = temp.next_node
             temp.next_node = temp.next_node.next_node
         return delete_node.data
-    
+
     def delete(self, data) -> str:
         current = self.head
-        
+
         # Find node to delete
         i = 0
         while current.data != data:
@@ -158,29 +158,29 @@ class LinkedList:
                 i += 1
             else: # We have reached end w/o finding data
                 return "No data found matching given value"
-        
+
         if current == self.head:
             self.delete_head()
         else: # Before: a --> b (current) --> c
             self.delete_nth(i) # a --> c
         return data
-    
+
     def is_empty(self):
         """
         >>> linked_list = LinkedList()
-        >>> linked_list.is_empty()    
+        >>> linked_list.is_empty()
         True
         >>> linked_list.insert_end(1)
         >>> linked_list.is_empty()
         False
         """
         return len(self) == 0
-    
+
 class Queue:
-    
+
     def __init__(self):
         self.queue = LinkedList()
-        
+
     def __str__(self):
         """
         >>> queue = Queue()
@@ -191,7 +191,7 @@ class Queue:
         'a->b->c'
         """
         return str(self.queue)
-    
+
     def __iter__(self):
         """
         >>> queue = Queue()
@@ -202,7 +202,7 @@ class Queue:
         ('a', 'b', 'c')
         """
         return iter(self.queue)
-    
+
     def __len__(self):
         """
         >>> queue = Queue()
@@ -212,19 +212,19 @@ class Queue:
         True
         """
         return len(self.queue)
-    
+
     # O(1) running time
     def is_empty(self):
         """
         >>> queue = Queue()
-        >>> queue.is_empty()    
+        >>> queue.is_empty()
         True
         >>> queue.enqueue(1)
         >>> queue.is_empty()
         False
         """
         return self.queue.is_empty()
-    
+
     # O(N) running time
     # TODO: switch to doubly-linked list for O(N) running time
     def enqueue(self, data):
@@ -236,7 +236,7 @@ class Queue:
         '1->2->3->4->5'
         """
         self.queue.insert_end(data=data)
-    
+
     # O(1) running time
     def dequeue(self):
         """
@@ -246,10 +246,12 @@ class Queue:
         >>> queue.dequeue()
         1
         """
+        if self.is_empty():
+            raise IndexError('list index out of range')
         data = self.queue.head.data
         self.queue.delete_head()
         return data
-    
+
     def peek(self):
         """
         >>> queue = Queue()
@@ -258,12 +260,43 @@ class Queue:
         >>> queue.peek()
         1
         """
+        if self.is_empty():
+            raise IndexError('list index out of range')
         return self.queue.head.data
 
-# TODO: write test_queue
-# def test_queue():
+
+def test_queue():
+    """
+    >>> test_queue()
+    """
+    queue = Queue()
+    assert queue.is_empty() is True
+    assert str(queue) == ""
+
+    try:
+        queue.dequeue()
+        assert False # This should not happen
+    except IndexError:
+        assert True # This should happen
+
+    try:
+        queue.peek()
+        assert False # This should not happen
+    except IndexError:
+        assert True # This should happen
+
+    for i in range(10):
+        assert len(queue) == i
+        queue.enqueue(i)
+    assert str(queue) == '->'.join([str(i) for i in range(10)])
+
+    assert queue.dequeue() == 0
+    assert queue.peek() == 1
+    assert queue.dequeue() == 1
+    assert queue.peek() == 2
+
 
 if __name__ == "__main__":
     from doctest import testmod
-    
+
     testmod()
